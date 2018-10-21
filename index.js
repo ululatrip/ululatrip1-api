@@ -6,6 +6,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+client.connect();
+
 app.get("/trip", async (req, res) => {
   try {
     const trip = await client.query("SELECT * FROM trip;");
