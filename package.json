@@ -1,0 +1,26 @@
+{
+  "name": "ululatrip1-api",
+  "version": "1.0.0",
+  "description": "ini lagi belajar backend purwadhika local project setup",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ululatrip/ululatrip1-api.git"
+  },
+  "author": "Regiarfi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ululatrip/ululatrip1-api/issues"
+  },
+  "homepage": "https://github.com/ululatrip/ululatrip1-api#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "db-migrate": "^0.11.3",
+    "db-migrate-pg": "^0.4.0",
+    "express": "^4.16.4",
+    "pg": "^7.5.0"
+  }
+}
