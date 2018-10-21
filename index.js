@@ -6,7 +6,12 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-client.connect();
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
+  });
+  
+  client.connect();
 
 app.get("/trip", async (req, res) => {
   try {
