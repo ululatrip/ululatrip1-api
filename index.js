@@ -6,6 +6,19 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Basic Authorization
+app.use((req, res, next) => {
+  if (
+    req.headers.authorization === undefined ||
+    req.headers.authorization !== process.env.API_TOKEN
+  ) {
+    res.status(400);
+    return res.json({ error: "Unauthorized (0)" });
+  }
+  next();
+});
+
+
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true
