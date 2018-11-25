@@ -2,5 +2,14 @@
     "production": {
       "driver": "pg",
       "ssl": "true"
+    },
+
+    "dev": {
+      "driver": "pg",
+      "user": "postgres",
+      "password": "Dearegitama1!",
+      "host": "localhost",
+      "database": "postgres",
+      "schema": "public"
     }
   }
