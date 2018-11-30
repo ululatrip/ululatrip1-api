@@ -24,7 +24,7 @@ module.exports = client => {
   module.selectAccounts = async (items_per_page, page) => {
     const offset = (page - 1) * items_per_page || 0;
     const accounts = await client.query(
-      "SELECT id,  firstname, lastname, email, role, created_at, updated_at FROM account ORDER BY id LIMIT ($1) OFFSET ($2);",
+      "SELECT id,  firstname, lastname, email, role, phone, created_at, updated_at FROM account ORDER BY id LIMIT ($1) OFFSET ($2);",
       [items_per_page, offset]
     );
     return accounts.rows;
@@ -36,7 +36,7 @@ module.exports = client => {
     switch (by) {
       case "id":
         account = await client.query(
-          "SELECT id,  firstname, lastname, email, role, created_at, updated_at FROM account WHERE id=($1) LIMIT 1;",
+          "SELECT id,  firstname, lastname, email, role, phone, created_at, updated_at FROM account WHERE id=($1) LIMIT 1;",
           [parameter]
         );
         return account.rows[0];
@@ -46,8 +46,8 @@ module.exports = client => {
   // insertAccount
   module.insertAccount = async body => {
     const account = await client.query(
-      "INSERT INTO account ( firstname, lastname, email, role) VALUES ($1, $2, $3, $4) RETURNING id, firstname, lastname, email, role, created_at, updated_at;",
-      [ body.firstname, body.lastname, body.email, body.role]
+      "INSERT INTO account ( firstname, lastname, email, role, phone) VALUES ($1, $2, $3, $4, $5) RETURNING id, firstname, lastname, email, role, phone, created_at, updated_at;",
+      [ body.firstname, body.lastname, body.email, body.role, body.phone]
     );
     return account.rows[0];
   };
@@ -55,8 +55,8 @@ module.exports = client => {
   // updateAccount
   module.updateAccount = async (id, body) => {
     const account = await client.query(
-      `UPDATE account SET  firstname=$1, lastname=$2, email=$3, role=$4, updated_at=NOW() WHERE id=$5 RETURNING id, firstname, lastname, email, role, created_at, updated_at;`,
-      [ body.firstname, body.lastname, body.email, body.role, id]
+      `UPDATE account SET  firstname=$1, lastname=$2, email=$3, role=$4, phone=$5 updated_at=NOW() WHERE id=$6 RETURNING id, firstname, lastname, email, role, phone, created_at, updated_at;`,
+      [ body.firstname, body.lastname, body.email, body.role, body.phone, id]
     );
     return account.rows[0];
   };
@@ -64,7 +64,7 @@ module.exports = client => {
   // deleteAccount
   module.deleteAccount = async id => {
     const account = await client.query(
-      `DELETE FROM account WHERE id=$1 RETURNING id, firstname, lastname, email, role, created_at, updated_at;`,
+      `DELETE FROM account WHERE id=$1 RETURNING id, firstname, lastname, email, role, phone, created_at, updated_at;`,
       [id]
     );
     return account.rows[0];

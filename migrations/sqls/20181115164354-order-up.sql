@@ -2,9 +2,12 @@
 create table "order" (
     id bigserial not null,
     trip_id bigserial not null,
-    triphost_id bigserial not null,
+    trip_host_id bigserial not null,
+    payment_id bigserial not null,
     account_id bigserial not null,
     order_date DATE not null,
+    order_status text not null,
+
     
     created_at timestamptz DEFAULT now(),
     updated_at timestamptz DEFAULT now(),
@@ -16,28 +19,37 @@ create table "order" (
 insert into 
     "order" (
         trip_id,
-        triphost_id,
+        trip_host_id,
         account_id,
-        order_date
+        payment_id,
+        order_date,
+        order_status
+        
     )
 values
     (
-        '1',
-        '1',
-        '1',
-        '1-28-2018'
+        1,
+        1,
+        1,
+        1,
+        '1-28-2018',
+        'aman'
     ),
     (
         
-        '2',
-        '2',
-        '2',
-        '2-28-2018'
+        2,
+        2,
+        2,
+        2,
+        '2-28-2018',
+        'aman'
     ),
     (
         
-        '3',
-        '3',
-        '3',
-        '3-28-2018'
+        3,
+        3,
+        3,
+        3,
+        '3-28-2018',
+        'aman'
     );

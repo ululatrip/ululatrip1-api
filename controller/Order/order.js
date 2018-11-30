@@ -13,9 +13,11 @@ module.exports = client => {
 
   module.mandatoryFields = [
     "trip_id",
-    "triphost_id",
+    "trip_host_id",
     "account_id",
-    "order_date"
+    "payment_id",
+    "order_date",
+    "order_status"
   ];
 
 

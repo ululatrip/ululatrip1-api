@@ -12,6 +12,9 @@ const Account = require("./controller/account/account");
 const Trip = require("./controller/trip/trip");
 const Order = require("./controller/order/order");
 const Message = require("./controller/message/message");
+const TripHost = require("./controller/trip_host/trip_host");
+const TripOrder = require("./controller/trip_order/trip_order");
+const Payment = require("./controller/payment/payment");
 
 const HelperResponse = require("./controller/helper/response");
 
@@ -64,6 +67,27 @@ app.get("/message/:id", message.getMessage);
 app.post("/message", message.postMessage);
 app.patch("/message/:id", message.patchMessage);
 app.delete("/message/:id", message.deleteMessage);
+
+const trip_host = TripHost(main_db);
+app.get("/trip_hosts/:page/:items_per_page", trip_host.getTripHosts);
+app.get("/trip_host/:id", trip_host.getTripHost);
+app.post("/trip_host", trip_host.postTripHost);
+app.patch("/trip_host/:id", trip_host.patchTripHost);
+app.delete("/trip_host/:id", trip_host.deleteTripHost);
+
+const trip_order = TripOrder(main_db);
+app.get("/trip_orders/:page/:items_per_page", trip_order.getTripOrders);
+app.get("/trip_order/:id", trip_order.getTripOrder);
+app.post("/trip_order", trip_order.postTripOrder);
+app.patch("/trip_order/:id", trip_order.patchTripOrder);
+app.delete("/trip_order/:id", trip_order.deleteTripOrder);
+
+const payment = Payment(main_db);
+app.get("/payments/:page/:items_per_page", payment.getPayments);
+app.get("/payment/:id", payment.getPayment);
+app.post("/payment", payment.postPayment);
+app.patch("/payment/:id", payment.patchPayment);
+app.delete("/payment/:id", payment.deletePayment);
 
 app.all("*", (req, res) => {
   return res.json({ data: "Hello world!" });

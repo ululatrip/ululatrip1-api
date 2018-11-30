@@ -1,40 +1,28 @@
-const ModelTrip = require("./../../model/trip/trip");
-
+const ModelPayment = require("./../../model/payment/payment");
 
 const HelperResponse = require("./../helper/response");
 const HelperValidation = require("./../helper/validation");
 
 
 module.exports = client => {
-  const modelTrip = ModelTrip(client);
-  
+  const modelPayment = ModelPayment(client);
 
   const reply = HelperResponse();
   const validate = HelperValidation();
 
-
   let module = {};
 
   module.mandatoryFields = [
-    "trip_host_id",
-    "activity_category_id",
-    "trip_details_id",
-    "destination",
-    "location",
-    "duration_hour",
-    "gross_amount",
-    "dates",
-    "price",
-    "cover_photo_url",
-    "gallery_photo_url",
-    "trip_overview", 
-    "itinerary", 
-    "meeting_point", 
-    "meeting_time"
+        "order_id",
+        "payment_option",
+        "unique_code"
   ];
 
-  // getTrips
-  module.getTrips = async (req, res) => {
+
+        
+
+  // getPayments
+  module.getPayments = async (req, res) => {
     req.query.items_per_page = parseInt(req.query.items_per_page);
     req.query.page = parseInt(req.query.page);
     if (req.params.items_per_page < 0 || req.params.items_per_page <= 0)
@@ -45,52 +33,48 @@ module.exports = client => {
       );
 
     try {
-      const trips = await modelTrip.selectTrips(
+      const payments = await modelPayment.selectPayments(
         req.params.items_per_page,
         req.params.page
       );
-      return reply.success(req, res, trips);
+      return reply.success(req, res, payments);
     } catch (e) {
       return reply.error(req, res, e);
     }
   };
 
-  // getTrip
-  module.getTrip = async (req, res) => {
+  // getPayment
+  module.getPayment = async (req, res) => {
     req.query.id = parseInt(req.query.id);
     if (req.params.id <= 0)
       return reply.badRequest(req, res, "invalid parameter id");
 
     try {
-      const trip = await modelTrip.selectTrip("id", req.params.id);
-      if (trip === undefined)
-        return reply.notFound(req, res, "trip not found in db");
-      else return reply.success(req, res, trip);
+      const payment = await modelPayment.selectPayment("id", req.params.id);
+      if (payment === undefined)
+        return reply.notFound(req, res, "payment not found in db");
+      else return reply.success(req, res, payment);
     } catch (e) {
       return reply.error(req, res, e);
     }
   };
 
-  // postTrip
-  module.postTrip = async (req, res) => {
+  // postPayment
+  module.postPayment = async (req, res) => {
     if (!validate.allMandatoryFieldsExists(req.body, module.mandatoryFields))
       return reply.badRequest(req, res, "incomplete req.body fields");
 
     try {
-      const trip = await modelTrip.insertTrip(req.body);
-      req.body.trip_id = trip.id;
-      const trip_details = await modelTrip.insertTripDetails(req.body);
-      console.log(trip_details)
-      const activity_category = await modelTrip.insertActivityCategory(req.body);
-      console.log(activity_category)
-      return reply.created(req, res, trip);
+      const payment = await modelPayment.insertPayment(req.body);
+
+      return reply.created(req, res, payment);
     } catch (e) {
       return reply.error(req, res, e);
     }
   };
 
-  // patchTrip
-  module.patchTrip = async (req, res) => {
+  // patchPayment
+  module.patchPayment = async (req, res) => {
     req.params.id = parseInt(req.params.id);
     if (req.params.id <= 0)
       return reply.badRequest(req, res, "invalid parameter id");
@@ -99,22 +83,22 @@ module.exports = client => {
       return reply.badRequest(req, res, "incomplete req.body fields");
 
     try {
-      const trip = await modelTrip.updateTrip(req.params.id, req.body);
-      return reply.created(req, res, trip);
+      const payment = await modelPayment.updatePayment(req.params.id, req.body);
+      return reply.created(req, res, payment);
     } catch (e) {
       return reply.error(req, res, e);
     }
   };
 
-  // deleteTrip
-  module.deleteTrip = async (req, res) => {
+  // deletePayment
+  module.deletePayment = async (req, res) => {
     req.params.id = parseInt(req.params.id);
     if (req.params.id <= 0)
       return reply.badRequest(req, res, "invalid parameter id");
 
     try {
-      const trip = await modelTrip.deleteTrip(req.params.id);
-      return reply.created(req, res, trip);
+      const payment = await modelPayment.deletePayment(req.params.id);
+      return reply.created(req, res, payment);
     } catch (e) {
       return reply.error(req, res, e);
     }

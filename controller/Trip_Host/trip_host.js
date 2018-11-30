@@ -1,40 +1,37 @@
-const ModelTrip = require("./../../model/trip/trip");
-
+const ModelTripHost = require("./../../model/trip_host/trip_host");
 
 const HelperResponse = require("./../helper/response");
 const HelperValidation = require("./../helper/validation");
 
 
 module.exports = client => {
-  const modelTrip = ModelTrip(client);
-  
+  const modelTripHost = ModelTripHost(client);
 
   const reply = HelperResponse();
   const validate = HelperValidation();
 
-
   let module = {};
 
   module.mandatoryFields = [
-    "trip_host_id",
-    "activity_category_id",
-    "trip_details_id",
-    "destination",
+    "account_id",
+    "trip_id",
+    "trip_host_rank",
+    "profile_picture_url",
     "location",
-    "duration_hour",
-    "gross_amount",
-    "dates",
-    "price",
-    "cover_photo_url",
-    "gallery_photo_url",
-    "trip_overview", 
-    "itinerary", 
-    "meeting_point", 
-    "meeting_time"
+    "occupation",
+    "bank_option",
+    "bank_account_name",
+    "bank_account_number",
+    "quotes",
+    "ktp_photo_url",
+    "ktp_selfie_photo_url"
   ];
 
-  // getTrips
-  module.getTrips = async (req, res) => {
+
+        
+
+  // getTripHosts
+  module.getTripHosts = async (req, res) => {
     req.query.items_per_page = parseInt(req.query.items_per_page);
     req.query.page = parseInt(req.query.page);
     if (req.params.items_per_page < 0 || req.params.items_per_page <= 0)
@@ -45,52 +42,48 @@ module.exports = client => {
       );
 
     try {
-      const trips = await modelTrip.selectTrips(
+      const trip_hosts = await modelTripHost.selectTripHosts(
         req.params.items_per_page,
         req.params.page
       );
-      return reply.success(req, res, trips);
+      return reply.success(req, res, trip_hosts);
     } catch (e) {
       return reply.error(req, res, e);
     }
   };
 
-  // getTrip
-  module.getTrip = async (req, res) => {
+  // getTripHost
+  module.getTripHost = async (req, res) => {
     req.query.id = parseInt(req.query.id);
     if (req.params.id <= 0)
       return reply.badRequest(req, res, "invalid parameter id");
 
     try {
-      const trip = await modelTrip.selectTrip("id", req.params.id);
-      if (trip === undefined)
-        return reply.notFound(req, res, "trip not found in db");
-      else return reply.success(req, res, trip);
+      const trip_host = await modelTripHost.selectTripHost("id", req.params.id);
+      if (trip_host === undefined)
+        return reply.notFound(req, res, "trip_host not found in db");
+      else return reply.success(req, res, trip_host);
     } catch (e) {
       return reply.error(req, res, e);
     }
   };
 
-  // postTrip
-  module.postTrip = async (req, res) => {
+  // postTripHost
+  module.postTripHost = async (req, res) => {
     if (!validate.allMandatoryFieldsExists(req.body, module.mandatoryFields))
       return reply.badRequest(req, res, "incomplete req.body fields");
 
     try {
-      const trip = await modelTrip.insertTrip(req.body);
-      req.body.trip_id = trip.id;
-      const trip_details = await modelTrip.insertTripDetails(req.body);
-      console.log(trip_details)
-      const activity_category = await modelTrip.insertActivityCategory(req.body);
-      console.log(activity_category)
-      return reply.created(req, res, trip);
+      const trip_host = await modelTripHost.insertTripHost(req.body);
+
+      return reply.created(req, res, trip_host);
     } catch (e) {
       return reply.error(req, res, e);
     }
   };
 
-  // patchTrip
-  module.patchTrip = async (req, res) => {
+  // patchTripHost
+  module.patchTripHost = async (req, res) => {
     req.params.id = parseInt(req.params.id);
     if (req.params.id <= 0)
       return reply.badRequest(req, res, "invalid parameter id");
@@ -99,22 +92,22 @@ module.exports = client => {
       return reply.badRequest(req, res, "incomplete req.body fields");
 
     try {
-      const trip = await modelTrip.updateTrip(req.params.id, req.body);
-      return reply.created(req, res, trip);
+      const trip_host = await modelTripHost.updateTripHost(req.params.id, req.body);
+      return reply.created(req, res, trip_host);
     } catch (e) {
       return reply.error(req, res, e);
     }
   };
 
-  // deleteTrip
-  module.deleteTrip = async (req, res) => {
+  // deleteTripHost
+  module.deleteTripHost = async (req, res) => {
     req.params.id = parseInt(req.params.id);
     if (req.params.id <= 0)
       return reply.badRequest(req, res, "invalid parameter id");
 
     try {
-      const trip = await modelTrip.deleteTrip(req.params.id);
-      return reply.created(req, res, trip);
+      const trip_host = await modelTripHost.deleteTripHost(req.params.id);
+      return reply.created(req, res, trip_host);
     } catch (e) {
       return reply.error(req, res, e);
     }

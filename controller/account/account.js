@@ -19,7 +19,8 @@ module.exports = client => {
     "firstname",
     "lastname",
     "email",
-    "role"
+    "role",
+    "phone"
   ];
 
   // getAccounts

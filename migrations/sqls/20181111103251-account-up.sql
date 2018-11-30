@@ -5,6 +5,7 @@ create table account (
     lastname text not null,
     email text not null,
     role text not null,
+    phone text not null,
     access_token text null,
     
     created_at timestamptz DEFAULT now(),
@@ -21,26 +22,30 @@ insert into
         firstname,
         lastname,
         email,
-        role
+        role,
+        phone
     )
 values
     (
         'regi',
         'arfiandi',
         'regiarfiandi@gmail.com',
-        'admin'
+        'admin',
+        '081290719716'
     ),
     (
         
         'triphost',
         '01',
         'triphost01@gmail.com',
-        'triphost'
+        'triphost',
+        '08127227722'
     ),
     (
         
         'tripper',
         '01',
         'tripper01@gmail.com',
-        'tripper'
+        'tripper',
+        '0118181818181'
     );

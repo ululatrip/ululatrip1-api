@@ -1,33 +1,35 @@
 /* Replace with your SQL commands */
+
 /* Replace with your SQL commands */
-create table message (
+/* Replace with your SQL commands */
+create table trip_order (
     id bigserial not null,
-    sender_id bigserial not null,
-    receiver_id bigserial not null,
-    message_date DATE not null,
-    message text not null,
+    order_id bigserial not null,
+    trip_id bigserial not null,
+    dates DATE not null,
+    gross_amount int not null,
    
     
     created_at timestamptz DEFAULT now(),
     updated_at timestamptz DEFAULT now(),
-    constraint message_pkey primary key (id)
+    constraint trip_order_pkey primary key (id)
 ) with (OIDS = FALSE);
 
 
 
 insert into
-    message (
-        sender_id,
-        receiver_id,
-        message_date,
-        message
+    trip_order (
+        order_id,
+        trip_id,
+        dates,
+        gross_amount
     )
 values
     (
         1,
         1,
         '1-28-2018',
-        'msggg'
+        '1'
     
     ),
     (
@@ -35,12 +37,12 @@ values
         2,
         2,
         '2-28-2018',
-        'msggg'
+        '2'
     ),
     (
         
         3,
         3,
         '3-28-2018',
-        'msggg'
+        '3'
     );
